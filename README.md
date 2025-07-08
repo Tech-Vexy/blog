@@ -1,25 +1,51 @@
-# Astro Starter Kit: Blog
+# Tech-Vexy Blog
 
-```sh
-pnpm create astro@latest -- --template blog
-```
+Personal blog of Veldrine Evelia - Computer Systems Engineering student sharing insights on AI/ML, development, and technology.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/blog)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/blog)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/blog/devcontainer.json)
+🌐 **Live Site**: [https://tech-vexy.github.io/blog](https://tech-vexy.github.io/blog)
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## ✨ Features
 
-![blog](https://github.com/withastro/astro/assets/2244813/ff10799f-a816-4703-b967-c78997e8323d)
+- ✅ **Modern Astro Framework** - Fast, static site generation
+- ✅ **20+ Technical Articles** - Computer Science and Engineering topics
+- ✅ **Responsive Design** - Works on all devices
+- ✅ **SEO Optimized** - Canonical URLs, OpenGraph, structured data
+- ✅ **RSS Feed** - Subscribe to latest posts
+- ✅ **Sitemap** - Auto-generated for search engines
+- ✅ **GitHub Pages** - Automated deployment
+- ✅ **TypeScript Support** - Type-safe development
 
-Features:
+## 🚀 Blog Topics
 
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
+### Student-Focused Content
+- Computer Systems Engineering journey
+- Programming languages (C, Python, JavaScript, TypeScript)
+- Data structures and algorithms
+- Database design principles
+- Computer networks fundamentals
+
+### Development Skills
+- Git and version control
+- Linux command line mastery
+- Web application development
+- Modern frontend frameworks
+- Machine learning for beginners
+
+### Advanced Topics
+- TypeScript advanced patterns
+- Microservices architecture
+- WebAssembly performance
+- AI in software development
+- Building scalable applications
+
+## 🛠️ Tech Stack
+
+- **Framework**: [Astro](https://astro.build/) v5.11.0
+- **Styling**: CSS3 with custom design system
+- **Content**: Markdown + MDX
+- **Deployment**: GitHub Pages with GitHub Actions
+- **Package Manager**: pnpm
+- **Type Safety**: TypeScript
 
 ## 🚀 Project Structure
 
