@@ -63,12 +63,12 @@ const { title, description, image = FallbackImage } = Astro.props;
 <meta property="twitter:image" content={new URL(image.src, Astro.url)} />
 
 <!-- Structured Data -->
-<script type="application/ld+json">
+<script type="application/ld+json" is:inline>
 {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "name": "{SITE_TITLE}",
-  "url": "{Astro.site}",
-  "description": "{description}"
+  "name": ${JSON.stringify(SITE_TITLE)},
+  "url": ${JSON.stringify(Astro.site)},
+  "description": ${JSON.stringify(description)}
 }
 </script>

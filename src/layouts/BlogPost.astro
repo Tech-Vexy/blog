@@ -6,51 +6,467 @@ import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 // import { Image } from 'astro:assets';
 
-type Props = CollectionEntry<'blog'>['data'];
+type Props = CollectionEntry<'blog'>['data'] & { 
+  tags?: string[];
+};
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, tags = ['Blog'] } = Astro.props;
+
+// Format date as "Month Day, Year" (July 2, 2025)
+function formatDate(date: Date): string {
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+
+const formattedDate = formatDate(pubDate);
 ---
 
 <html lang="en">
 	<head>
 		<BaseHead title={title} description={description} />
 		<style>
+			:root {
+				--post-gradient-start: #8b5cf6;
+				--post-gradient-end: #ec4899;
+			}
+			
+			body {
+				background-color: #0f0f11;
+				color: #f0f0f0;
+				font-family: 'Inter', system-ui, sans-serif;
+			}
+			
 			main {
-				width: calc(100% - 2em);
+				width: 100%;
 				max-width: 100%;
 				margin: 0;
+				padding: 0;
+				background-color: #0f0f11;
+				min-height: calc(100vh - 64px);
 			}
-			.hero-image {
+			
+			/* Date header - large and prominent as shown in reference image */
+			.post-date-header {
+				padding: 2rem 0;
+				font-size: 1.25rem;
+				color: #f0f0f0;
+				background-color: #0f0f11;
+				font-weight: 600;
+				letter-spacing: 0.01em;
+				border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+			}
+			
+			.container {
+				max-width: 1200px;
+				margin: 0 auto;
+				padding: 0 2rem;
+			}
+			
+			/* Main post header with gradient image */
+			.post-header {
+				position: relative;
+				padding: 4rem 0 8rem;
+				margin: 0;
+				overflow: hidden;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				min-height: 70vh;
+				background-color: #0f0f11;
+			}
+			
+			.post-header-gradient {
+				position: absolute;
+				inset: 0;
+				z-index: 0;
+				opacity: 0.9;
+				background: radial-gradient(circle at top right, rgba(139, 92, 246, 0.6), rgba(47, 21, 72, 0.5) 50%, transparent 100%), 
+							linear-gradient(135deg, rgba(56, 8, 113, 0.9), rgba(0, 0, 0, 0.9));
+			}
+			
+			.post-header-content {
+				position: relative;
+				z-index: 10;
+				max-width: 900px;
+				margin: 0 auto;
+				padding: 2rem;
+				text-align: center;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+			}
+			
+			/* Giant gradient number/logo, exactly as shown in reference image */
+			.post-header-logo {
+				font-size: 16rem;
+				font-weight: 900;
+				line-height: 1;
+				background: linear-gradient(135deg, rgba(255, 184, 108, 1), rgba(245, 99, 207, 1));
+				-webkit-background-clip: text;
+				background-clip: text;
+				-webkit-text-fill-color: transparent;
+				color: transparent;
+				margin-bottom: 2rem;
+				text-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+			}
+			
+			.post-title {
+				font-size: 3.25rem;
+				font-weight: 800;
+				line-height: 1.1;
+				color: #ffffff;
+				max-width: 800px;
+				margin-bottom: 1.75rem;
+				letter-spacing: -0.025em;
+				text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+			}
+			
+			.post-description {
+				font-size: 1.5rem;
+				color: rgba(255, 255, 255, 0.85);
+				max-width: 800px;
+				line-height: 1.5;
+				margin: 0 auto 2.5rem;
+				font-weight: 400;
+			}
+			
+			.post-meta {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				gap: 1.5rem;
+				color: rgba(255, 255, 255, 0.7);
+				font-size: 0.875rem;
+				margin-top: 2.5rem;
+			}
+			
+			.post-date {
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+			}
+			
+			.post-tags {
+				display: flex;
+				gap: 0.5rem;
+				margin-bottom: 2rem;
+			}
+			
+			.post-tag {
+				display: inline-block;
+				padding: 0.25rem 0.75rem;
+				font-size: 0.75rem;
+				font-weight: 600;
+				color: #ffffff;
+				background: rgba(255, 255, 255, 0.15);
+				border-radius: 9999px;
+				backdrop-filter: blur(10px);
+			}
+			
+			.post-content-wrapper {
+				position: relative;
+				background-color: #18181b;
+				padding: 5rem 0;
 				width: 100%;
 			}
-			.hero-image img {
-				display: block;
+
+			/* Blog layout with sidebar */
+			.blog-layout {
+				display: grid;
+				grid-template-columns: 260px minmax(0, 1fr);
+				gap: 3rem;
+				max-width: 1200px;
 				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
 			}
+			
+			/* Left Sidebar */
+			.blog-sidebar {
+				position: relative;
+			}
+			
+			.sidebar-section {
+				margin-bottom: 3rem;
+			}
+			
+			.sidebar-heading {
+				color: #f0f0f0;
+				font-size: 1.125rem;
+				font-weight: 500;
+				margin-bottom: 1.25rem;
+			}
+			
+			.sidebar-post-list {
+				list-style-type: none;
+				padding: 0;
+				margin: 0;
+			}
+			
+			.sidebar-post-list li {
+				margin-bottom: 1rem;
+			}
+			
+			.sidebar-link {
+				color: #f0f0f0;
+				text-decoration: none;
+				font-size: 1rem;
+				line-height: 1.4;
+				display: block;
+				transition: all 0.2s ease;
+				border-bottom: 1px solid transparent;
+			}
+			
+			.sidebar-link:hover {
+				color: var(--post-gradient-end);
+				text-decoration: none;
+				border-bottom: 1px solid var(--post-gradient-end);
+			}
+			
+			.sidebar-text {
+				color: rgba(255, 255, 255, 0.7);
+				font-size: 0.9rem;
+				margin-bottom: 1rem;
+			}
+			
+			.rss-button {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.5rem;
+				padding: 0.5rem 1.25rem;
+				background-color: transparent;
+				color: #f0f0f0;
+				border: 1px solid rgba(255, 255, 255, 0.2);
+				border-radius: 9999px;
+				font-size: 0.9rem;
+				font-weight: 500;
+				text-decoration: none;
+				transition: all 0.2s ease;
+			}
+			
+			.rss-button:hover {
+				background-color: rgba(255, 255, 255, 0.05);
+				border-color: rgba(255, 255, 255, 0.3);
+			}
+			
+			/* Main article content */
+			.blog-article {
+				width: 100%;
+			}
+			
+			.post-featured-image {
+				width: 100%;
+				max-width: 100%;
+				margin: 0 0 3rem;
+				overflow: hidden;
+				position: relative;
+				border-radius: 0.75rem;
+				box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+			}
+			
+			.post-featured-image img {
+				width: 100%;
+				height: auto;
+				object-fit: cover;
+				display: block;
+			}
+			
 			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
-				color: rgb(var(--gray-dark));
+				width: 768px;
+				max-width: calc(100% - 3rem);
+				margin: 0 auto;
+				padding: 2rem 1.5rem;
+				color: #e2e8f0;
+				font-size: 1.125rem;
+				line-height: 1.85;
 			}
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
+			
+			.prose h2 {
+				font-size: 2rem;
+				margin-top: 3rem;
+				margin-bottom: 1.25rem;
+				font-weight: 700;
+				color: #f8fafc;
+				position: relative;
+				padding-bottom: 0.75rem;
+				letter-spacing: -0.015em;
 			}
-			.title h1 {
-				margin: 0 0 0.5em 0;
+			
+			.prose h2::after {
+				content: '';
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				width: 4rem;
+				height: 4px;
+				background: linear-gradient(to right, var(--post-gradient-start), var(--post-gradient-end));
+				border-radius: 4px;
 			}
-			.date {
-				margin-bottom: 0.5em;
-				color: rgb(var(--gray));
+			
+			.prose h3 {
+				font-size: 1.625rem;
+				margin-top: 2.5rem;
+				margin-bottom: 1rem;
+				font-weight: 600;
+				color: #f8fafc;
+				letter-spacing: -0.01em;
 			}
+			
+			.prose p {
+				margin-bottom: 1.5rem;
+				color: #cbd5e1;
+			}
+			
+			.prose a {
+				color: var(--post-gradient-start);
+				text-decoration: underline;
+				text-decoration-thickness: 2px;
+				text-decoration-color: rgba(139, 92, 246, 0.3);
+				text-underline-offset: 2px;
+				transition: all 0.2s ease;
+			}
+			
+			.prose a:hover {
+				color: var(--post-gradient-end);
+				text-decoration-color: var(--post-gradient-end);
+			}
+			
+			.prose code {
+				background-color: rgba(0, 0, 0, 0.2);
+				color: #e2e8f0;
+				padding: 0.125rem 0.375rem;
+				border-radius: 0.25rem;
+				font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+				font-size: 0.875em;
+			}
+			
+			.prose pre {
+				background-color: #0f172a;
+				border: 1px solid rgba(255, 255, 255, 0.1);
+				padding: 1.25rem;
+				border-radius: 0.5rem;
+				overflow-x: auto;
+				margin: 2rem 0;
+			}
+			
+			.prose pre code {
+				background-color: transparent;
+				padding: 0;
+				font-size: 0.875rem;
+				line-height: 1.7;
+				color: #e2e8f0;
+			}
+			
+			.prose blockquote {
+				border-left: 4px solid var(--post-gradient-start);
+				padding: 1rem 1.5rem;
+				font-style: italic;
+				color: #94a3b8;
+				margin: 1.5rem 0;
+				background-color: rgba(0, 0, 0, 0.2);
+				border-radius: 0 0.5rem 0.5rem 0;
+			}
+			
+			.prose ul, .prose ol {
+				margin: 1.5rem 0;
+				padding-left: 1.5rem;
+				color: #cbd5e1;
+			}
+			
+			.prose li {
+				margin-bottom: 0.5rem;
+			}
+			
+			.prose img {
+				max-width: 100%;
+				height: auto;
+				border-radius: 0.5rem;
+				margin: 2rem 0;
+				border: 1px solid rgba(255, 255, 255, 0.1);
+			}
+			
 			.last-updated-on {
 				font-style: italic;
+				color: #94a3b8;
+			}
+			
+			@media (max-width: 992px) {
+				.blog-layout {
+					grid-template-columns: 1fr;
+					gap: 2rem;
+				}
+				
+				.blog-sidebar {
+					order: 2;
+					border-top: 1px solid rgba(255, 255, 255, 0.1);
+					padding-top: 2rem;
+					margin-top: 2rem;
+				}
+				
+				.blog-article {
+					order: 1;
+				}
+			}
+			
+			@media (max-width: 768px) {
+				.post-title {
+					font-size: 2.25rem;
+				}
+				
+				.post-description {
+					font-size: 1.125rem;
+				}
+				
+				.post-featured-image {
+					margin-bottom: 2rem;
+				}
+				
+				.post-header {
+					padding: 3rem 0 7rem;
+					min-height: 60vh;
+				}
+				
+				.post-header-logo {
+					font-size: 10rem;
+				}
+				
+				.post-date-header {
+					padding: 1.5rem 0;
+					font-size: 1rem;
+				}
+				
+				.post-content-wrapper {
+					padding: 3rem 0;
+				}
+				
+				.prose {
+					padding: 1.5rem 1rem;
+				}
+				
+				.container {
+					padding: 0 1.5rem;
+				}
+			}
+			
+			@media (max-width: 480px) {
+				.post-title {
+					font-size: 1.875rem;
+				}
+				
+				.post-header-logo {
+					font-size: 8rem;
+					margin-bottom: 1.5rem;
+				}
+				
+				.sidebar-section {
+					margin-bottom: 2rem;
+				}
+				
+				.container {
+					padding: 0 1rem;
+				}
 			}
 		</style>
 	</head>
@@ -58,28 +474,106 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 	<body>
 		<Header />
 		<main>
-			<article>
-				<div class="hero-image">
-					{heroImage && <img width="1020" height="510" src={heroImage} alt="" style="width: 100%; height: auto; border-radius: 12px;" />}
+			<!-- Large date at the top as per reference image -->
+			<div class="post-date-header">
+				<div class="container">
+					{formattedDate}
 				</div>
-				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
-									</div>
-								)
-							}
-						</div>
-						<h1>{title}</h1>
-						<hr />
+			</div>
+			
+			<!-- Dark background with gradient and big number/icon -->
+			<div class="post-header">
+				<div class="post-header-gradient"></div>
+				<div class="post-header-content">
+					<!-- Big gradient number/icon that matches the reference -->
+					<div class="post-header-logo">
+						{tags[0]?.charAt(0) || '#'}
 					</div>
-					<slot />
+					
+					<div class="post-tags">
+						{tags.map((tag: string) => (
+							<span class="post-tag">{tag}</span>
+						))}
+					</div>
+					
+					<h1 class="post-title">{title}</h1>
+					<p class="post-description">{description}</p>
+					
+					<div class="post-meta">
+						<div class="post-date">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+							<span><FormattedDate date={pubDate} /></span>
+						</div>
+						{updatedDate && (
+							<div class="post-date">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+								<span>Updated <FormattedDate date={updatedDate} /></span>
+							</div>
+						)}
+					</div>
 				</div>
-			</article>
+			</div>
+			
+			<div class="post-content-wrapper">
+				<div class="container">
+					<div class="blog-layout">
+						<!-- Left Sidebar - as shown in the image -->
+						<aside class="blog-sidebar">
+							<div class="sidebar-section">
+								<h3 class="sidebar-heading">Popular posts</h3>
+								<ul class="sidebar-post-list">
+									<li>
+										<a href="/better-images-in-astro" class="sidebar-link">
+											Better Images in Astro
+										</a>
+									</li>
+									<li>
+										<a href="/2023-web-framework-performance-report" class="sidebar-link">
+											2023 Web Framework Performance Report
+										</a>
+									</li>
+									<li>
+										<a href="/unlock-new-possibilities-with-hybrid-rendering" class="sidebar-link">
+											Unlock New Possibilities with Hybrid Rendering
+										</a>
+									</li>
+									<li>
+										<a href="/netlify-our-official-deployment-partner" class="sidebar-link">
+											Netlify: Our Official Deployment Partner
+										</a>
+									</li>
+								</ul>
+							</div>
+							
+							<div class="sidebar-section">
+								<h3 class="sidebar-heading">Subscribe</h3>
+								<p class="sidebar-text">Stay up-to-date with news from the Astroverse</p>
+								<a href="/rss.xml" class="rss-button">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+										<path d="M4 11a9 9 0 0 1 9 9"></path>
+										<path d="M4 4a16 16 0 0 1 16 16"></path>
+										<circle cx="5" cy="19" r="1"></circle>
+									</svg>
+									RSS
+								</a>
+							</div>
+						</aside>
+						
+						<!-- Main article content -->
+						<article class="blog-article">
+							{heroImage && (
+								<div class="post-featured-image">
+									<img src={heroImage} alt={title} />
+								</div>
+							)}
+							
+							<div class="prose">
+								<slot />
+							</div>
+						</article>
+					</div>
+				</div>
+			</div>
 		</main>
 		<Footer />
 	</body>

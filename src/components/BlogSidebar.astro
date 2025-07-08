@@ -1,0 +1,106 @@
+---
+import { getCollection } from 'astro:content';
+
+// Get popular posts (we'll just use the latest ones for now)
+const allPosts = await getCollection('blog');
+const popularPosts = allPosts
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 4);
+---
+
+<aside class="blog-sidebar">
+  <div class="sidebar-section">
+    <h3 class="sidebar-heading">Popular posts</h3>
+    <ul class="sidebar-post-list">
+      {popularPosts.map((post) => (
+        <li>
+          <a href={`/blog/${post.id}/`} class="sidebar-link">
+            {post.data.title}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+  
+  <div class="sidebar-section">
+    <h3 class="sidebar-heading">Subscribe</h3>
+    <p class="sidebar-text">Stay up-to-date with news from the Astroverse</p>
+    <a href="/rss.xml" class="rss-button">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 11a9 9 0 0 1 9 9"></path>
+        <path d="M4 4a16 16 0 0 1 16 16"></path>
+        <circle cx="5" cy="19" r="1"></circle>
+      </svg>
+      RSS
+    </a>
+  </div>
+</aside>
+
+<style>
+  .blog-sidebar {
+    width: 100%;
+  }
+
+  .sidebar-section {
+    margin-bottom: 3rem;
+  }
+
+  .sidebar-heading {
+    color: #f0f0f0;
+    font-size: 1.125rem;
+    font-weight: 500;
+    margin-bottom: 1.25rem;
+  }
+
+  .sidebar-post-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .sidebar-post-list li {
+    margin-bottom: 1rem;
+  }
+
+  .sidebar-link {
+    color: #f0f0f0;
+    text-decoration: none;
+    font-size: 1rem;
+    line-height: 1.4;
+    display: block;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid transparent;
+  }
+
+  .sidebar-link:hover {
+    color: var(--post-gradient-end);
+    text-decoration: none;
+    border-bottom: 1px solid var(--post-gradient-end);
+  }
+
+  .sidebar-text {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .rss-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1.25rem;
+    background-color: transparent;
+    color: #f0f0f0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 9999px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .rss-button:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+</style>

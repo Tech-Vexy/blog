@@ -2,13 +2,13 @@
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { SITE_TITLE } from '../consts';
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title="404 - Page Not Found | {SITE_TITLE}" description="The page you're looking for doesn't exist." />
+		<BaseHead title={`404 - Page Not Found | ${SITE_TITLE}`} description="The page you're looking for doesn't exist." />
 	</head>
 	<body>
 		<Header />
@@ -24,24 +24,69 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 </html>
 
 <style>
-	main {
-		width: calc(100% - 2rem);
-		max-width: calc(100% - 2rem);
-		margin: 0 auto;
-		padding: 3rem 1rem;
+	:root {
+		--post-gradient-start: #8b5cf6;
+		--post-gradient-end: #ec4899;
 	}
+
+	body {
+		background-color: #0f0f11;
+		color: #f0f0f0;
+		font-family: 'Inter', system-ui, sans-serif;
+	}
+
+	main {
+		width: 100%;
+		max-width: 100%;
+		margin: 0 auto;
+		padding: 0;
+		min-height: calc(100vh - 64px);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
 	section {
 		text-align: center;
-		padding: 2rem 0;
+		padding: 4rem 2rem;
+		max-width: 600px;
+		border-radius: 1rem;
+		background-color: #18181b;
+		border: 1px solid rgba(255, 255, 255, 0.05);
+		box-shadow: 0 20px 40px rgba(0,0,0,0.2);
 	}
+
 	h1 {
-		margin-bottom: 1rem;
+		margin-bottom: 1.5rem;
+		font-size: 3rem;
+		font-weight: 700;
+		background: linear-gradient(to right, var(--post-gradient-start), var(--post-gradient-end));
+		-webkit-background-clip: text;
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+		color: transparent;
 	}
+
+	p {
+		margin-bottom: 2rem;
+		font-size: 1.2rem;
+		color: rgba(255, 255, 255, 0.7);
+	}
+
 	a {
-		color: rgb(var(--accent));
+		display: inline-block;
+		background: linear-gradient(135deg, var(--post-gradient-start), var(--post-gradient-end));
+		color: white;
 		text-decoration: none;
+		padding: 0.75rem 1.5rem;
+		border-radius: 9999px;
+		font-weight: 500;
+		transition: all 0.2s ease;
+		box-shadow: 0 4px 10px rgba(139, 92, 246, 0.3);
 	}
+
 	a:hover {
-		text-decoration: underline;
+		transform: translateY(-2px);
+		box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
 	}
 </style>
