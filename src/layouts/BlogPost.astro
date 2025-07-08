@@ -173,6 +173,84 @@ const formattedDate = formatDate(pubDate);
 				padding: 5rem 0;
 				width: 100%;
 			}
+			
+			.blog-layout {
+				display: grid;
+				grid-template-columns: minmax(250px, 1fr) minmax(0, 3fr);
+				gap: 3rem;
+				align-items: start;
+			}
+			
+			.blog-sidebar {
+				position: sticky;
+				top: 2rem;
+			}
+			
+			.sidebar-section {
+				margin-bottom: 2.5rem;
+				border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+				padding-bottom: 1.5rem;
+			}
+			
+			.sidebar-section:last-child {
+				border-bottom: none;
+				padding-bottom: 0;
+			}
+			
+			.sidebar-heading {
+				font-size: 1rem;
+				font-weight: 500;
+				margin-bottom: 1rem;
+				color: #f0f0f0;
+			}
+			
+			.sidebar-post-list {
+				list-style-type: none;
+				padding: 0;
+				margin: 0;
+			}
+			
+			.sidebar-post-list li {
+				margin-bottom: 0.75rem;
+			}
+			
+			.sidebar-link {
+				color: #f0f0f0;
+				text-decoration: none;
+				transition: color 0.2s ease;
+				line-height: 1.5;
+				font-size: 0.9rem;
+			}
+			
+			.sidebar-link:hover {
+				color: var(--post-gradient-start);
+			}
+			
+			.sidebar-text {
+				color: rgba(255, 255, 255, 0.7);
+				margin-bottom: 1rem;
+				font-size: 0.9rem;
+				line-height: 1.5;
+			}
+			
+			.rss-button {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.5rem;
+				padding: 0.5rem 1rem;
+				background-color: rgba(255, 255, 255, 0.1);
+				border: 1px solid rgba(255, 255, 255, 0.2);
+				border-radius: 9999px;
+				color: #f0f0f0;
+				text-decoration: none;
+				font-size: 0.875rem;
+				font-weight: 500;
+				transition: all 0.2s ease;
+			}
+			
+			.rss-button:hover {
+				background-color: rgba(255, 255, 255, 0.2);
+			}
 
 			/* Blog layout with sidebar */
 			.blog-layout {
@@ -523,22 +601,22 @@ const formattedDate = formatDate(pubDate);
 								<h3 class="sidebar-heading">Popular posts</h3>
 								<ul class="sidebar-post-list">
 									<li>
-										<a href="/better-images-in-astro" class="sidebar-link">
+										<a href="/blog/better-images-in-astro" class="sidebar-link">
 											Better Images in Astro
 										</a>
 									</li>
 									<li>
-										<a href="/2023-web-framework-performance-report" class="sidebar-link">
+										<a href="/blog/2023-web-framework-performance-report" class="sidebar-link">
 											2023 Web Framework Performance Report
 										</a>
 									</li>
 									<li>
-										<a href="/unlock-new-possibilities-with-hybrid-rendering" class="sidebar-link">
+										<a href="/blog/unlock-new-possibilities-with-hybrid-rendering" class="sidebar-link">
 											Unlock New Possibilities with Hybrid Rendering
 										</a>
 									</li>
 									<li>
-										<a href="/netlify-our-official-deployment-partner" class="sidebar-link">
+										<a href="/blog/netlify-our-official-deployment-partner" class="sidebar-link">
 											Netlify: Our Official Deployment Partner
 										</a>
 									</li>
