@@ -1,63 +1,443 @@
 ---
-import Layout from '../layouts/BlogPost.astro';
-import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+// import { Image } from 'astro:assets';
+// import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
 ---
 
-<Layout
-	title="About Me"
-	description="Lorem ipsum dolor sit amet"
-	pubDate={new Date('August 08 2021')}
-	heroImage={AboutHeroImage}
->
-	<p>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-		labore et dolore magna aliqua. Vitae ultricies leo integer malesuada nunc vel risus commodo
-		viverra. Adipiscing enim eu turpis egestas pretium. Euismod elementum nisi quis eleifend quam
-		adipiscing. In hac habitasse platea dictumst vestibulum. Sagittis purus sit amet volutpat. Netus
-		et malesuada fames ac turpis egestas. Eget magna fermentum iaculis eu non diam phasellus
-		vestibulum lorem. Varius sit amet mattis vulputate enim. Habitasse platea dictumst quisque
-		sagittis. Integer quis auctor elit sed vulputate mi. Dictumst quisque sagittis purus sit amet.
-	</p>
-
-	<p>
-		Morbi tristique senectus et netus. Id semper risus in hendrerit gravida rutrum quisque non
-		tellus. Habitasse platea dictumst quisque sagittis purus sit amet. Tellus molestie nunc non
-		blandit massa. Cursus vitae congue mauris rhoncus. Accumsan tortor posuere ac ut. Fringilla urna
-		porttitor rhoncus dolor. Elit ullamcorper dignissim cras tincidunt lobortis. In cursus turpis
-		massa tincidunt dui ut ornare lectus. Integer feugiat scelerisque varius morbi enim nunc.
-		Bibendum neque egestas congue quisque egestas diam. Cras ornare arcu dui vivamus arcu felis
-		bibendum. Dignissim suspendisse in est ante in nibh mauris. Sed tempus urna et pharetra pharetra
-		massa massa ultricies mi.
-	</p>
-
-	<p>
-		Mollis nunc sed id semper risus in. Convallis a cras semper auctor neque. Diam sit amet nisl
-		suscipit. Lacus viverra vitae congue eu consequat ac felis donec. Egestas integer eget aliquet
-		nibh praesent tristique magna sit amet. Eget magna fermentum iaculis eu non diam. In vitae
-		turpis massa sed elementum. Tristique et egestas quis ipsum suspendisse ultrices. Eget lorem
-		dolor sed viverra ipsum. Vel turpis nunc eget lorem dolor sed viverra. Posuere ac ut consequat
-		semper viverra nam. Laoreet suspendisse interdum consectetur libero id faucibus. Diam phasellus
-		vestibulum lorem sed risus ultricies tristique. Rhoncus dolor purus non enim praesent elementum
-		facilisis. Ultrices tincidunt arcu non sodales neque. Tempus egestas sed sed risus pretium quam
-		vulputate. Viverra suspendisse potenti nullam ac tortor vitae purus faucibus ornare. Fringilla
-		urna porttitor rhoncus dolor purus non. Amet dictum sit amet justo donec enim.
-	</p>
-
-	<p>
-		Mattis ullamcorper velit sed ullamcorper morbi tincidunt. Tortor posuere ac ut consequat semper
-		viverra. Tellus mauris a diam maecenas sed enim ut sem viverra. Venenatis urna cursus eget nunc
-		scelerisque viverra mauris in. Arcu ac tortor dignissim convallis aenean et tortor at. Curabitur
-		gravida arcu ac tortor dignissim convallis aenean et tortor. Egestas tellus rutrum tellus
-		pellentesque eu. Fusce ut placerat orci nulla pellentesque dignissim enim sit amet. Ut enim
-		blandit volutpat maecenas volutpat blandit aliquam etiam. Id donec ultrices tincidunt arcu. Id
-		cursus metus aliquam eleifend mi.
-	</p>
-
-	<p>
-		Tempus quam pellentesque nec nam aliquam sem. Risus at ultrices mi tempus imperdiet. Id porta
-		nibh venenatis cras sed felis eget velit. Ipsum a arcu cursus vitae. Facilisis magna etiam
-		tempor orci eu lobortis elementum. Tincidunt dui ut ornare lectus sit. Quisque non tellus orci
-		ac. Blandit libero volutpat sed cras. Nec tincidunt praesent semper feugiat nibh sed pulvinar
-		proin gravida. Egestas integer eget aliquet nibh praesent tristique magna.
-	</p>
-</Layout>
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title="About Veldrine Evelia - Tech-Vexy" description="Computer Systems Engineering student passionate about AI/ML and building innovative solutions. Let's connect and build something amazing together!" />
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+			
+			body {
+				font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+				background: #f8fafc;
+				color: #1a202c;
+				line-height: 1.6;
+			}
+			
+			.container {
+				max-width: 1200px;
+				margin: 0 auto;
+				padding: 0 2rem;
+			}
+			
+			/* Hero Section */
+			.hero {
+				background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+				color: white;
+				padding: 6rem 0;
+				text-align: center;
+				position: relative;
+				overflow: hidden;
+			}
+			
+			.hero::before {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="white" opacity="0.1"/><circle cx="80" cy="40" r="3" fill="white" opacity="0.1"/><circle cx="40" cy="80" r="2" fill="white" opacity="0.1"/></svg>');
+				background-size: 200px 200px;
+				animation: float 20s infinite linear;
+			}
+			
+			@keyframes float {
+				0% { transform: translateY(0px); }
+				50% { transform: translateY(-20px); }
+				100% { transform: translateY(0px); }
+			}
+			
+			.hero-content {
+				position: relative;
+				z-index: 1;
+			}
+			
+			.hero h1 {
+				font-size: 3.5rem;
+				font-weight: 900;
+				margin-bottom: 1rem;
+				text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+				letter-spacing: -0.02em;
+			}
+			
+			.hero p {
+				font-size: 1.3rem;
+				margin-bottom: 2rem;
+				opacity: 0.9;
+				max-width: 600px;
+				margin-left: auto;
+				margin-right: auto;
+			}
+			
+			.hero-image {
+				width: 200px;
+				height: 200px;
+				border-radius: 50%;
+				margin: 0 auto 2rem;
+				overflow: hidden;
+				border: 4px solid rgba(255, 255, 255, 0.3);
+				box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+			}
+			
+			.hero-image img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+			}
+			
+			/* Content Section */
+			.content {
+				padding: 6rem 0;
+				background: white;
+			}
+			
+			.content-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+				gap: 3rem;
+				margin-bottom: 4rem;
+			}
+			
+			.content-card {
+				background: white;
+				padding: 2rem;
+				border-radius: 20px;
+				box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+				transition: transform 0.3s ease;
+			}
+			
+			.content-card:hover {
+				transform: translateY(-5px);
+			}
+			
+			.content-card h2 {
+				color: #1a202c;
+				font-size: 1.8rem;
+				font-weight: 700;
+				margin-bottom: 1rem;
+				background: linear-gradient(135deg, #667eea, #764ba2);
+				background-clip: text;
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+			}
+			
+			.content-card p {
+				color: #4a5568;
+				margin-bottom: 1rem;
+			}
+			
+			.content-card ul {
+				color: #4a5568;
+				padding-left: 1.5rem;
+			}
+			
+			.content-card li {
+				margin-bottom: 0.5rem;
+			}
+			
+			.values-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+				gap: 2rem;
+				margin-top: 2rem;
+			}
+			
+			.value-item {
+				background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+				padding: 2rem;
+				border-radius: 16px;
+				text-align: center;
+				transition: transform 0.3s ease;
+			}
+			
+			.value-item:hover {
+				transform: translateY(-5px);
+			}
+			
+			.value-item h3 {
+				color: #1a202c;
+				font-size: 1.5rem;
+				font-weight: 700;
+				margin-bottom: 1rem;
+			}
+			
+			.value-item p {
+				color: #4a5568;
+			}
+			
+			/* Team Section */
+			.team-section {
+				padding: 4rem 0;
+				background: #f8fafc;
+				text-align: center;
+			}
+			
+			.section-title {
+				font-size: 2.5rem;
+				font-weight: 800;
+				color: #1a202c;
+				margin-bottom: 3rem;
+				text-align: center;
+			}
+			
+			.team-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+				gap: 2rem;
+			}
+			
+			.team-member {
+				background: white;
+				padding: 2rem;
+				border-radius: 20px;
+				box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+				transition: transform 0.3s ease;
+			}
+			
+			.team-member:hover {
+				transform: translateY(-5px);
+			}
+			
+			.member-avatar {
+				width: 80px;
+				height: 80px;
+				border-radius: 50%;
+				background: linear-gradient(135deg, #667eea, #764ba2);
+				margin: 0 auto 1rem;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 2rem;
+				color: white;
+			}
+			
+			.member-name {
+				font-size: 1.3rem;
+				font-weight: 700;
+				color: #1a202c;
+				margin-bottom: 0.5rem;
+			}
+			
+			.member-role {
+				color: #667eea;
+				font-weight: 600;
+				margin-bottom: 1rem;
+			}
+			
+			.member-bio {
+				color: #4a5568;
+				font-size: 0.95rem;
+				margin-bottom: 1rem;
+			}
+			
+			.social-link {
+				display: inline-block;
+				background: linear-gradient(135deg, #667eea, #764ba2);
+				color: white;
+				padding: 0.75rem 1.5rem;
+				border-radius: 25px;
+				text-decoration: none;
+				font-weight: 600;
+				font-size: 0.9rem;
+				transition: all 0.3s ease;
+				box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+			}
+			
+			.social-link:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+			}
+			
+			.collaboration-section {
+				background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+				padding: 3rem;
+				border-radius: 20px;
+				text-align: center;
+				margin-top: 3rem;
+			}
+			
+			.collaboration-text {
+				font-size: 1.1rem;
+				color: #4a5568;
+				max-width: 800px;
+				margin: 0 auto;
+				line-height: 1.7;
+			}
+			
+			@media (max-width: 768px) {
+				.hero h1 {
+					font-size: 2.5rem;
+				}
+				
+				.hero p {
+					font-size: 1.1rem;
+				}
+				
+				.container {
+					padding: 0 1rem;
+				}
+				
+				.content-grid {
+					grid-template-columns: 1fr;
+					gap: 2rem;
+				}
+				
+				.values-grid {
+					grid-template-columns: 1fr;
+				}
+				
+				.team-grid {
+					grid-template-columns: 1fr;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<!-- Hero Section -->
+			<section class="hero">
+				<div class="container">
+					<div class="hero-content">
+						<div class="hero-image">
+							<img width="200" height="200" src="../../assets/blog-placeholder-about.jpg" alt="Veldrine Evelia - Tech-Vexy" style="width: 100%; height: 100%; object-fit: cover;" />
+						</div>
+						<h1>Hello, I'm Veldrine Evelia</h1>
+						<p>Computer Systems Engineering student passionate about AI/ML and building innovative solutions. Let's connect and build something amazing together!</p>
+					</div>
+				</div>
+			</section>
+			
+			<!-- Content Section -->
+			<section class="content">
+				<div class="container">
+					<div class="content-grid">
+						<div class="content-card">
+							<h2>🎓 About Me</h2>
+							<p>
+								I'm a Computer Systems Engineering student at Kirinyaga University, passionate about 
+								building innovative solutions that solve real-world problems. My interests revolve around 
+								Artificial Intelligence and Machine Learning, and I'm constantly expanding my knowledge 
+								in various programming languages and cutting-edge technologies.
+							</p>
+							<p>
+								As a tech enthusiast, I love exploring complex challenges and finding creative solutions. 
+								Whether it's building web applications, diving into AI algorithms, or contributing to 
+								open-source projects, I'm always excited to learn and grow as a developer.
+							</p>
+						</div>
+						
+						<div class="content-card">
+							<h2>🛠️ Skills & Technologies</h2>
+							<p>
+								I'm proficient in several programming languages and constantly learning new technologies:
+							</p>
+							<ul>
+								<li><strong>Programming Languages:</strong> Python, C, JavaScript, HTML5, CSS3</li>
+								<li><strong>Currently Learning:</strong> Java, TypeScript, Spring Boot & Vaadin</li>
+								<li><strong>Areas of Interest:</strong> AI/ML, Web Development, Data Structures & Algorithms</li>
+								<li><strong>Focus Areas:</strong> Python for AI/ML applications, Advanced C programming</li>
+							</ul>
+						</div>
+						
+						<div class="content-card">
+							<h2>🚀 What I'm Working On</h2>
+							<div class="values-grid">
+								<div class="value-item">
+									<h3>🤖 AI/ML Projects</h3>
+									<p>Exploring machine learning algorithms and their practical applications in solving real-world problems.</p>
+								</div>
+								<div class="value-item">
+									<h3>💻 Web Development</h3>
+									<p>Building responsive web applications using modern JavaScript frameworks and best practices.</p>
+								</div>
+								<div class="value-item">
+									<h3>📚 Open Source</h3>
+									<p>Contributing to open-source projects and sharing knowledge with the developer community.</p>
+								</div>
+								<div class="value-item">
+									<h3>🧠 Problem Solving</h3>
+									<p>Developing strong problem-solving skills through coding challenges and algorithmic thinking.</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="collaboration-section">
+						<h2 class="section-title">💞️ Let's Collaborate!</h2>
+						<p class="collaboration-text">
+							I'm eager to collaborate on projects involving Python applications, C programming, 
+							JavaScript-based web applications, and AI/ML projects for beginners. If you have an 
+							exciting project idea or want to build something amazing together, let's connect!
+						</p>
+					</div>
+				</div>
+			</section>
+			
+			<!-- Connect Section -->
+			<section class="team-section">
+				<div class="container">
+					<h2 class="section-title">📫 Let's Connect!</h2>
+					<div class="team-grid">
+						<div class="team-member">
+							<div class="member-avatar">�</div>
+							<div class="member-name">LinkedIn</div>
+							<div class="member-role">Professional Network</div>
+							<p class="member-bio">
+								Connect with me on LinkedIn to see my professional journey and let's network!
+							</p>
+							<a href="https://www.linkedin.com/in/veldrineevelia" target="_blank" rel="noopener" class="social-link">
+								Connect on LinkedIn
+							</a>
+						</div>
+						<div class="team-member">
+							<div class="member-avatar">🐦</div>
+							<div class="member-name">Twitter/X</div>
+							<div class="member-role">Tech Discussions</div>
+							<p class="member-bio">
+								Follow me on X for tech updates, insights, and engaging discussions about development.
+							</p>
+							<a href="https://x.com/EVeldrine" target="_blank" rel="noopener" class="social-link">
+								Follow on X
+							</a>
+						</div>
+						<div class="team-member">
+							<div class="member-avatar">💻</div>
+							<div class="member-name">GitHub</div>
+							<div class="member-role">Code Repository</div>
+							<p class="member-bio">
+								Check out my projects and contributions on GitHub. Let's collaborate on something amazing!
+							</p>
+							<a href="https://github.com/Tech-Vexy" target="_blank" rel="noopener" class="social-link">
+								View GitHub Profile
+							</a>
+						</div>
+						<div class="team-member">
+							<div class="member-avatar">📧</div>
+							<div class="member-name">Email</div>
+							<div class="member-role">Direct Contact</div>
+							<p class="member-bio">
+								Have a project idea or want to collaborate? Feel free to reach out directly via email.
+							</p>
+							<a href="mailto:eveliaveldrine@gmail.com" class="social-link">
+								Send Email
+							</a>
+						</div>
+					</div>
+				</div>
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>

@@ -5,6 +5,20 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://example.com',
+	site: 'https://tech-vexy.github.io',
+	base: '/blog',
 	integrations: [mdx(), sitemap()],
+	build: {
+		inlineStylesheets: 'auto',
+	},
+	compressHTML: true,
+	vite: {
+		build: {
+			minify: 'esbuild',
+			cssMinify: true,
+		},
+	},
+	security: {
+		checkOrigin: true,
+	},
 });

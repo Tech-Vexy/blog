@@ -1,7 +1,9 @@
 ---
 title: 'First post'
+cover: '../../assets/blog-placeholder-3.jpg'
+coverAlt: 'Blog placeholder image'
 description: 'Lorem ipsum dolor sit amet'
-pubDate: 'Jul 08 2022'
+pubDate: 2022-07-08
 heroImage: '../../assets/blog-placeholder-3.jpg'
 ---
 

@@ -1,7 +1,9 @@
 ---
 title: 'Second post'
+cover: '../../assets/blog-placeholder-4.jpg'
+coverAlt: 'Blog placeholder image'
 description: 'Lorem ipsum dolor sit amet'
-pubDate: 'Jul 15 2022'
+pubDate: 2022-07-15
 heroImage: '../../assets/blog-placeholder-4.jpg'
 ---
 
