@@ -124,7 +124,7 @@ const { postSlug } = Astro.props;
   }
 </style>
 
-<script define:vars={{ postSlug }}>
+<script define:vars={{ postSlug }} is:inline>
   document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('commentForm');
     const commentsList = document.getElementById('commentsList');

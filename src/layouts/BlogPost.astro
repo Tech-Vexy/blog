@@ -665,11 +665,11 @@ const formattedDate = formatDate(pubDate);
 				const headings = document.querySelectorAll('.prose h2, .prose h3, .prose h4');
 				headings.forEach((heading, index) => {
 					if (!heading.id) {
-						const text = heading.textContent.toLowerCase()
+						const text = heading.textContent?.toLowerCase()
 							.replace(/[^a-z0-9\s-]/g, '')
 							.replace(/\s+/g, '-')
 							.replace(/-+/g, '-')
-							.trim();
+							.trim() || `heading-${index}`;
 						heading.id = text || `heading-${index}`;
 					}
 				});
