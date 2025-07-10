@@ -1,0 +1,117 @@
+---
+// Table of Contents component that generates navigation from headings
+---
+
+<div class="toc-container">
+  <h3 class="toc-title">Table of Contents</h3>
+  <nav class="toc-nav" id="tocNav">
+    <!-- TOC will be populated by JavaScript -->
+  </nav>
+</div>
+
+<style>
+  .toc-container {
+    margin-bottom: 0;
+  }
+
+  .toc-title {
+    color: #f0f0f0;
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 0 0 1.25rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid rgba(139, 92, 246, 0.3);
+    display: inline-block;
+  }
+
+  .toc-nav {
+    font-size: 0.875rem;
+  }
+
+  .toc-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc-nav li {
+    margin: 0.25rem 0;
+  }
+
+  .toc-nav a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    display: block;
+    padding: 0.25rem 0;
+    border-left: 2px solid transparent;
+    padding-left: 0.5rem;
+    transition: all 0.2s ease;
+    line-height: 1.4;
+  }
+
+  .toc-nav a:hover {
+    color: #8b5cf6;
+    border-left-color: #8b5cf6;
+  }
+
+  .toc-nav a.active {
+    color: #ec4899;
+    border-left-color: #ec4899;
+    background: rgba(236, 72, 153, 0.1);
+  }
+
+  .toc-nav .toc-h3 {
+    padding-left: 1rem;
+    font-size: 0.8rem;
+  }
+
+  .toc-nav .toc-h4 {
+    padding-left: 1.5rem;
+    font-size: 0.75rem;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const tocNav = document.getElementById('tocNav');
+    const headings = document.querySelectorAll('.prose h2, .prose h3, .prose h4');
+    
+    if (!tocNav || headings.length === 0) return;
+
+    // Generate TOC
+    const tocList = document.createElement('ul');
+    
+    headings.forEach((heading, index) => {
+      const id = heading.id || `heading-${index}`;
+      if (!heading.id) heading.id = id;
+      
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = `#${id}`;
+      a.textContent = heading.textContent;
+      a.className = `toc-${heading.tagName.toLowerCase()}`;
+      
+      li.appendChild(a);
+      tocList.appendChild(li);
+    });
+    
+    tocNav.appendChild(tocList);
+
+    // Active section highlighting
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const id = entry.target.id;
+        const tocLink = tocNav.querySelector(`a[href="#${id}"]`);
+        
+        if (entry.isIntersecting) {
+          tocNav.querySelectorAll('a').forEach(link => link.classList.remove('active'));
+          tocLink?.classList.add('active');
+        }
+      });
+    }, {
+      rootMargin: '-20% 0% -35% 0%'
+    });
+
+    headings.forEach(heading => observer.observe(heading));
+  });
+</script>

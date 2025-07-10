@@ -1,0 +1,186 @@
+---
+const { postSlug } = Astro.props;
+---
+
+<div class="comments-section">
+  <h3 class="comments-title">Comments</h3>
+  
+  <form class="comment-form" id="commentForm">
+    <div class="form-group">
+      <input type="text" id="commentName" placeholder="Your name" required>
+    </div>
+    <div class="form-group">
+      <textarea id="commentText" placeholder="Share your thoughts..." required></textarea>
+    </div>
+    <button type="submit" class="submit-btn">Post Comment</button>
+  </form>
+
+  <div class="comments-list" id="commentsList">
+    <!-- Comments will be loaded here -->
+  </div>
+</div>
+
+<style>
+  .comments-section {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .comments-title {
+    color: #f0f0f0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+  }
+
+  .comment-form {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0.25rem;
+    padding: 0.75rem;
+    color: #f0f0f0;
+    font-size: 0.9rem;
+  }
+
+  .form-group textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+  }
+
+  .submit-btn {
+    background: linear-gradient(135deg, #8b5cf6, #ec4899);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: transform 0.2s ease;
+  }
+
+  .submit-btn:hover {
+    transform: translateY(-1px);
+  }
+
+  .comment-item {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .comment-author {
+    color: #8b5cf6;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .comment-date {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.8rem;
+  }
+
+  .comment-text {
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .no-comments {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    font-style: italic;
+    padding: 2rem;
+  }
+</style>
+
+<script define:vars={{ postSlug }}>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('commentForm');
+    const commentsList = document.getElementById('commentsList');
+    const commentsKey = `comments_${postSlug}`;
+
+    function loadComments() {
+      const comments = JSON.parse(localStorage.getItem(commentsKey) || '[]');
+      
+      if (comments.length === 0) {
+        commentsList.innerHTML = '<p class="no-comments">No comments yet. Be the first to share your thoughts!</p>';
+        return;
+      }
+
+      commentsList.innerHTML = comments.map(comment => `
+        <div class="comment-item">
+          <div class="comment-header">
+            <span class="comment-author">${escapeHtml(comment.name)}</span>
+            <span class="comment-date">${new Date(comment.date).toLocaleDateString()}</span>
+          </div>
+          <p class="comment-text">${escapeHtml(comment.text)}</p>
+        </div>
+      `).join('');
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function addComment(name, text) {
+      const comments = JSON.parse(localStorage.getItem(commentsKey) || '[]');
+      const newComment = {
+        id: Date.now(),
+        name: name.trim(),
+        text: text.trim(),
+        date: new Date().toISOString()
+      };
+      
+      comments.unshift(newComment);
+      localStorage.setItem(commentsKey, JSON.stringify(comments));
+      loadComments();
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const name = document.getElementById('commentName').value;
+      const text = document.getElementById('commentText').value;
+      
+      if (name.trim() && text.trim()) {
+        addComment(name, text);
+        form.reset();
+      }
+    });
+
+    loadComments();
+  });
+</script>

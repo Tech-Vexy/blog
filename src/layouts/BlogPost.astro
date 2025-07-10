@@ -4,6 +4,10 @@ import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
+import ShareActions from '../components/ShareActions.astro';
+import TableOfContents from '../components/TableOfContents.astro';
+//import RelatedPosts from '../components/RelatedPosts.astro';
+import Comments from '../components/Comments.astro';
 // import { Image } from 'astro:assets';
 
 type Props = CollectionEntry<'blog'>['data'] & { 
@@ -11,6 +15,7 @@ type Props = CollectionEntry<'blog'>['data'] & {
 };
 
 const { title, description, pubDate, updatedDate, heroImage, tags = ['Blog'] } = Astro.props;
+const currentSlug = Astro.url.pathname.split('/').pop();
 
 // Format date as "Month Day, Year" (July 2, 2025)
 function formatDate(date: Date): string {
@@ -76,20 +81,23 @@ const formattedDate = formatDate(pubDate);
 				justify-content: center;
 				min-height: 70vh;
 				background-color: #0f0f11;
+				background-size: cover;
+				background-position: center;
+				background-repeat: no-repeat;
 			}
 			
 			.post-header-gradient {
 				position: absolute;
 				inset: 0;
-				z-index: 0;
-				opacity: 0.9;
-				background: radial-gradient(circle at top right, rgba(139, 92, 246, 0.6), rgba(47, 21, 72, 0.5) 50%, transparent 100%), 
-							linear-gradient(135deg, rgba(56, 8, 113, 0.9), rgba(0, 0, 0, 0.9));
+				z-index: 1;
+				opacity: 0.85;
+				background: radial-gradient(circle at top right, rgba(139, 92, 246, 0.7), rgba(47, 21, 72, 0.6) 50%, transparent 100%), 
+							linear-gradient(135deg, rgba(56, 8, 113, 0.8), rgba(0, 0, 0, 0.7));
 			}
 			
 			.post-header-content {
 				position: relative;
-				z-index: 10;
+				z-index: 2;
 				max-width: 900px;
 				margin: 0 auto;
 				padding: 2rem;
@@ -264,17 +272,33 @@ const formattedDate = formatDate(pubDate);
 			/* Left Sidebar */
 			.blog-sidebar {
 				position: relative;
+				background: rgba(0, 0, 0, 0.4);
+				border: 1px solid rgba(255, 255, 255, 0.1);
+				border-radius: 0.75rem;
+				padding: 2rem;
+				backdrop-filter: blur(10px);
 			}
 			
 			.sidebar-section {
-				margin-bottom: 3rem;
+				margin-bottom: 2.5rem;
+				padding-bottom: 2rem;
+				border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+			}
+			
+			.sidebar-section:last-child {
+				border-bottom: none;
+				padding-bottom: 0;
+				margin-bottom: 0;
 			}
 			
 			.sidebar-heading {
 				color: #f0f0f0;
 				font-size: 1.125rem;
-				font-weight: 500;
+				font-weight: 600;
 				margin-bottom: 1.25rem;
+				padding-bottom: 0.5rem;
+				border-bottom: 2px solid rgba(139, 92, 246, 0.3);
+				display: inline-block;
 			}
 			
 			.sidebar-post-list {
@@ -370,6 +394,7 @@ const formattedDate = formatDate(pubDate);
 				position: relative;
 				padding-bottom: 0.75rem;
 				letter-spacing: -0.015em;
+				scroll-margin-top: 2rem;
 			}
 			
 			.prose h2::after {
@@ -390,6 +415,7 @@ const formattedDate = formatDate(pubDate);
 				font-weight: 600;
 				color: #f8fafc;
 				letter-spacing: -0.01em;
+				scroll-margin-top: 2rem;
 			}
 			
 			.prose p {
@@ -542,6 +568,10 @@ const formattedDate = formatDate(pubDate);
 					margin-bottom: 2rem;
 				}
 				
+				.prose h4 {
+					scroll-margin-top: 2rem;
+				}
+				
 				.container {
 					padding: 0 1rem;
 				}
@@ -560,7 +590,7 @@ const formattedDate = formatDate(pubDate);
 			</div>
 			
 			<!-- Dark background with gradient and big number/icon -->
-			<div class="post-header">
+			<div class="post-header" style={heroImage ? `background-image: url(${heroImage})` : ''}>
 				<div class="post-header-gradient"></div>
 				<div class="post-header-content">
 					<!-- Big gradient number/icon that matches the reference -->
@@ -595,37 +625,14 @@ const formattedDate = formatDate(pubDate);
 			<div class="post-content-wrapper">
 				<div class="container">
 					<div class="blog-layout">
-						<!-- Left Sidebar - as shown in the image -->
+						<!-- Left Sidebar -->
 						<aside class="blog-sidebar">
-							<div class="sidebar-section">
-								<h3 class="sidebar-heading">Popular posts</h3>
-								<ul class="sidebar-post-list">
-									<li>
-										<a href="/blog/better-images-in-astro" class="sidebar-link">
-											Better Images in Astro
-										</a>
-									</li>
-									<li>
-										<a href="/blog/2023-web-framework-performance-report" class="sidebar-link">
-											2023 Web Framework Performance Report
-										</a>
-									</li>
-									<li>
-										<a href="/blog/unlock-new-possibilities-with-hybrid-rendering" class="sidebar-link">
-											Unlock New Possibilities with Hybrid Rendering
-										</a>
-									</li>
-									<li>
-										<a href="/blog/netlify-our-official-deployment-partner" class="sidebar-link">
-											Netlify: Our Official Deployment Partner
-										</a>
-									</li>
-								</ul>
-							</div>
-							
+							<TableOfContents />
+							<!-- <RelatedPosts currentSlug={currentSlug} /> -->
+
 							<div class="sidebar-section">
 								<h3 class="sidebar-heading">Subscribe</h3>
-								<p class="sidebar-text">Stay up-to-date with news from the Astroverse</p>
+								<p class="sidebar-text">Stay up-to-date with latest posts</p>
 								<a href="/rss.xml" class="rss-button">
 									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 										<path d="M4 11a9 9 0 0 1 9 9"></path>
@@ -639,20 +646,34 @@ const formattedDate = formatDate(pubDate);
 						
 						<!-- Main article content -->
 						<article class="blog-article">
-							{heroImage && (
-								<div class="post-featured-image">
-									<img src={heroImage} alt={title} />
-								</div>
-							)}
-							
 							<div class="prose">
 								<slot />
 							</div>
+							
+							<Comments postSlug={currentSlug} />
 						</article>
 					</div>
 				</div>
 			</div>
 		</main>
+		<ShareActions title={title} url={`https://tech-vexy.github.io${Astro.url.pathname}`} />
 		<Footer />
+		
+		<script>
+			// Generate IDs for headings
+			document.addEventListener('DOMContentLoaded', () => {
+				const headings = document.querySelectorAll('.prose h2, .prose h3, .prose h4');
+				headings.forEach((heading, index) => {
+					if (!heading.id) {
+						const text = heading.textContent.toLowerCase()
+							.replace(/[^a-z0-9\s-]/g, '')
+							.replace(/\s+/g, '-')
+							.replace(/-+/g, '-')
+							.trim();
+						heading.id = text || `heading-${index}`;
+					}
+				});
+			});
+		</script>
 	</body>
 </html>

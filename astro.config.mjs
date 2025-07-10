@@ -5,7 +5,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://tech-vexy.github.io',
+	site: 'https://blog.veldrineevelia.software',
 	base: '/',
 	integrations: [mdx(), sitemap()],
 	build: {
